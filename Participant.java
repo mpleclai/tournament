@@ -33,6 +33,18 @@ public class Participant {
         return bowlAvg;
     }
 
+    public String getFN(){
+        return firstName;
+    }
+
+    public String getLN(){
+        return lastName;
+    }
+
+    public Participant getPartner(){
+        return partner;
+    }
+
     //setter methods
     public void setFirstName(String firstname) {
         this.firstName = firstname;
@@ -44,6 +56,10 @@ public class Participant {
 
     public void setBowlAvg(int bowlAvg) {
         this.bowlAvg = bowlAvg;
+    }
+
+    public void setPartner(Participant partner){
+        this.partner = partner;
     }
 
     //constructor
@@ -72,7 +88,7 @@ public class Participant {
 
     @Override
     public String toString() {
-        return "[ Name: " + firstName + " " + lastName + ", Average: " + bowlAvg + ", Partner: " + partner + "]";
+        return "[ Name: " + firstName + " " + lastName + ", Average: " + bowlAvg + ", Partner: " + partner.getFN() + " " + partner.getLN() + ", Partner Avg: " + partner.getBowlAvg() + "]";
     }
 
     /**
@@ -98,7 +114,7 @@ public class Participant {
 
                 //get input
                 input = line.split(cvsSplitBy);
-                System.out.println(Arrays.toString(input));
+//                System.out.println(Arrays.toString(input));
 
                 //get first name
                 fn = input[0];
@@ -109,7 +125,7 @@ public class Participant {
                 //get avg
                 ba = Integer.parseInt(input[2]);
 
-                System.out.println("id: " + i + ", FN: " +  fn + ", LN: " + ln + ", Avg: " + ba);
+//                System.out.println("id: " + i + ", FN: " +  fn + ", LN: " + ln + ", Avg: " + ba);
                 Participant p = new Participant(i, fn, ln, ba);
                 bowlers.add(p);
 
@@ -141,17 +157,27 @@ public class Participant {
         //Sort by bowling average
         Collections.sort(bowlers, Participant.partBowlAvg);
             //add 5 points to pair in 2D table of poissible matchings?
-
         //Associate Participants with friends
             //2D table of friendships -- maybe remove from attributes
             //if [][] = 2, add 2 points to pair in 2D table of poissible matchings?
+        int i;
+        for(i = 0; i < bowlers.size(); i++){
+            (bowlers.get(i)).setPartner(bowlers.get(bowlers.size() - i - 1));
+            (bowlers.get(bowlers.size() - i - 1)).setPartner(bowlers.get(i));
 
-        for(Participant p: bowlers){
-            System.out.println(p.toString());
+
         }
 
-        //Print results in form of
+        for(i = 0; i < bowlers.size()/2;i++){
+
+            //Print results in form of
             //Team No. , Participant 1 , Participant 2
+
+            Participant p = bowlers.get(i);
+            System.out.println("Team " + (i + 1) + ": " + p.getFN() + " " + p.getLN() + " (Avg: " + p.getBowlAvg() + " ) & " + p.getPartner().getFN() + " " + p.getPartner().getLN() + " (Avg: " + p.getPartner().getBowlAvg() + " )");
+        }
+
+
 
     }
 }
