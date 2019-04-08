@@ -47,10 +47,11 @@ public class Participant {
     }
 
     //constructor
-    public Participant(String firstname, String lastname, int bowlAvg) {
-        this.firstName = firstname;
-        this.lastName = lastname;
-        this.bowlAvg = bowlAvg;
+    public Participant(int bowlerID, String firstname, String lastname, int bowlAvg) {
+       this.bowlerID = bowlerID;
+       this.firstName = firstname;
+       this.lastName = lastname;
+       this.bowlAvg = bowlAvg;
     }
 
     /*Comparator for sorting the list by bowlAvg*/
@@ -74,24 +75,66 @@ public class Participant {
         return "[ Name: " + firstName + " " + lastName + ", Average: " + bowlAvg + ", Partner: " + partner + "]";
     }
 
-//}
+    /**
+     * This method fills an ArrayList of Participants with information input by a csv file.
+     *
+     *         //For each bowler imported from spreadsheet
+     *         //Create a Participant Object with listed characteristics
+     *         //Load Participant Object into list
+     *
+     **/
+    public ArrayList<Participant> createParticipantList(ArrayList<Participant> bowlers, String csvFile, String line, String cvsSplitBy) {
+
+        try(BufferedReader br = new BufferedReader(new FileReader(csvFile))){
+
+            String [] input = null;
+            String fn = null;
+            String ln = null;
+            int ba = 0;
+
+            int i = 0;
+            while ((line = br.readLine()) != null){
+                // use comma as seperator
+
+                //get input
+                input = line.split(cvsSplitBy);
+                System.out.println(Arrays.toString(input));
+
+                //get first name
+                fn = input[0];
+
+                //get last name
+                ln = input[1];
+
+                //get avg
+                ba = Integer.parseInt(input[2]);
+
+                System.out.println("id: " + i + ", FN: " +  fn + ", LN: " + ln + ", Avg: " + ba);
+                Participant p = new Participant(i, fn, ln, ba);
+                bowlers.add(p);
+
+                i++;
+
+            }
+
+        } catch(IOException e){
+            e.printStackTrace();
+        }
+
+        return bowlers;
+    }
+
     public static void main(String [] args){
         //List to store all Participants
         ArrayList<Participant> bowlers = new ArrayList<Participant>();
 
-        Participant c = new Participant("jjj", "jjjj", 5);
-        Participant n = new Participant("nnnn", "nnn", 6);
-        Participant l = new Participant("mmmm", "jjjj", 200);
-        Participant m = new Participant("nnmskdfmnn", "sd", 0);
+        Participant s = new Participant(999,"instance", "instance", 999);
 
-        bowlers.add(c);
-        bowlers.add(n);
-        bowlers.add(l);
-        bowlers.add(m);
+        String csvFile="bowlers-list.csv";
+        String line = "";
+        String cvsSplitBy = ",";
 
-        //For each bowler imported from spreadsheet
-        //Create a Participant Object with listed characteristics
-        //Load Participant Object into list
+        s.createParticipantList(bowlers, csvFile, line, cvsSplitBy);
 
         //Logic for generating teams(pairs)
 
