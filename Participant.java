@@ -53,7 +53,7 @@ public class Participant {
         this.bowlAvg = bowlAvg;
     }
 
-    /*Comparator for sorting the list by roll no*/
+    /*Comparator for sorting the list by bowlAvg*/
     public static Comparator<Participant> partBowlAvg = new Comparator<Participant>() {
 
         public int compare(Participant s1, Participant s2) {
